@@ -44,7 +44,7 @@ export const gameApi = createApi({
         method: 'PATCH',
       }),
       invalidatesTags: (_, __, { gameId }) => [{ type: 'Board', id: gameId }],
-      async onQueryStarted({ questionId, gameId }, { dispatch, queryFulfilled, getState }) {
+      async onQueryStarted({ questionId, gameId }, { dispatch, queryFulfilled }) {
         let wasSelected = false;
 
         const patchResult = dispatch(
