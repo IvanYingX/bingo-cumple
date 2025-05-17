@@ -21,11 +21,12 @@ model User {
 }
 
 model Game {
-  id        String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  questions GameQuestion[]
+  id          String   @unique
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  availableAt DateTime @default(now())
+  questions   GameQuestion[]
 }
 
 model GameQuestion {

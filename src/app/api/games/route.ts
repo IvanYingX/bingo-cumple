@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
+  const now = new Date();
   const games = await prisma.game.findMany({ 
     include: {
       questions: true,
+    },
+    where: {
+      availableAt: {
+        lte: now,
+      },
     },
   });
   return NextResponse.json(games);
