@@ -31,6 +31,32 @@ export const gameApi = createApi({
       query: () => `games`,
       providesTags: ['Game'],
     }),
+    createGame: builder.mutation<GameWithQuestions, { name: string; questions: { question: string }[]; gameId?: string }>({
+      query: (body) => ({
+        url: 'games',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Game'],
+    }),
+    getGameFromId: builder.query<GameWithQuestions, string>({
+      query: (gameId) => `games/${gameId}`,
+      providesTags: (result, error, gameId) => [{ type: 'Game', id: gameId }],
+    }), 
+    getGameStatus: builder.query<
+      { started: boolean; gameId: string },
+      { gameId: string }
+    >({
+      query: ({ gameId }) => `games/${gameId}/status`,
+      providesTags: (result, error, { gameId }) => [{ type: 'Game', id: gameId }],
+    }),
+    startGame: builder.mutation<void, string>({
+      query: (gameId) => ({
+        url: `games/${gameId}/start`,
+        method: 'POST',
+      }),
+      invalidatesTags: (result, error, gameId) => [{ type: 'Game', id: gameId }],
+    }),
     getBoard: builder.query<BingoCell[], string>({
       query: (gameId) => `games/${gameId}/board`,
       providesTags: (result, error, gameId) => [{ type: 'Board', id: gameId }],
@@ -66,12 +92,23 @@ export const gameApi = createApi({
         }
       },
     }),
-
+    deleteGame: builder.mutation<void, string>({
+      query: (gameId) => ({
+        url: `games/${gameId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, gameId) => [{ type: 'Game', id: gameId }]
+    }),
   }),
 });
 
 export const {
   useGetGamesQuery,
+  useCreateGameMutation,
+  useGetGameFromIdQuery,
+  useGetGameStatusQuery,
+  useStartGameMutation,
   useGetBoardQuery,
   useToggleCellMutation,
+  useDeleteGameMutation,
 } = gameApi;

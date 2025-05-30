@@ -19,10 +19,28 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const body = await req.json();
-  const { name, questions } = body;
+  const { name, questions, gameId } = body;
 
   if (!name || typeof name !== 'string') {
     return NextResponse.json({ error: 'Game name is required' }, { status: 400 });
+  }
+
+  // If there is a gameId, we are updating an existing game
+  if (gameId) {
+    const game = await prisma.game.update({
+      where: { id: gameId },
+      data: {
+        name,
+        questions: {
+          deleteMany: {},
+          create: questions.map((q: { question: string }) => ({
+            id: crypto.randomUUID(),
+            question: q.question,
+          })),
+        },
+      },
+    });
+    return NextResponse.json(game);
   }
 
   const game = await prisma.game.create({

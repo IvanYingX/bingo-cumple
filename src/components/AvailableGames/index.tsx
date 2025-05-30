@@ -4,7 +4,7 @@ import CardGame from "./CardGame";
 import { useGetGamesQuery } from "@/lib/features/gameSlice";
 
 export default function AvailableGames() {
-  const { data, isLoading} = useGetGamesQuery();
+  const { data, isLoading, refetch: refetchGames } = useGetGamesQuery();
   if (isLoading) return <div>Cargando juegos...</div>;
   if (!data || data.length === 0) return <div>Parece que no hay juegos disponibles</div>;
   return (
@@ -14,7 +14,7 @@ export default function AvailableGames() {
       </p>
       <div className="flex flex-row gap-4">
       {data?.map((game) => (
-          <CardGame key={game.id} game={game} />
+          <CardGame key={game.id} game={game} refetchGames={refetchGames} />
         ))}
       </div>
     </div>

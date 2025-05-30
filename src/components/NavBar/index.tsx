@@ -1,6 +1,7 @@
 import SignOut from './SignOut';
 import Link from 'next/link';
 import { auth } from '@/auth';
+import { Button } from '../ui/button';
 
 export default async function NavBar() {
   const session = await auth();
@@ -12,14 +13,17 @@ export default async function NavBar() {
           <Link href="/" className="text-2xl font-bold">
             Bingo
           </Link>
-          {session.user.role === 'ADMIN' && ( 
-            <Link href="/create-game" className="text-xl font-bold">
-              Crear Juego
-            </Link>
-          )}
+          
         </div>
       </div>
       <div className="flex flex-row justify-end gap-4">
+        {session.user.role === 'ADMIN' && ( 
+          <Button className="font-bold cursor-pointer">
+            <Link href="/create-game" className="text-white">
+              Crear Juego
+            </Link>
+          </Button>
+        )}
         <SignOut />
       </div>
     </header>
