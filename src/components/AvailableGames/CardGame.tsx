@@ -128,7 +128,6 @@ const CardGame = ({ game, refetchGames }: CardGameProps) => {
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <StartGameModal
-          gameId={game.id}
           setShowDialog={setShowDialog}
           loading={loading}
           handleStartGame={handleStartGame}

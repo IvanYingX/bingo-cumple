@@ -2,12 +2,10 @@ import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog
 import { Button } from "@/components/ui/button";
 
 const StartGameModal = ({
-  gameId,
   setShowDialog,
   loading,
   handleStartGame,
 }: {
-  gameId: string;
   setShowDialog: (show: boolean) => void;
   loading: boolean;
   handleStartGame: () => void;
